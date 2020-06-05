@@ -1,4 +1,4 @@
-# aplantida
+# TODO challenge
 
 <br>
 
@@ -34,15 +34,7 @@ This is app aims to help the user manage a TODO list
 | `/signup` | SignupPage | anon only `<AnonRoute>`    | Signup form, link to login, navigate to homepage after signup |
 | `/login`  | LoginPage  | anon only `<AnonRoute>`    | Login form, link to signup, navigate to homepage after login  |
 | `/logout` | n/a        | user only `<PrivateRoute>` | Navigate to homepage after logout, expire session             |
-| `/todos`  | TodosList  | user only `<PrivateRoute>` | Options todos                                                 |
-
-| `/plants` | PlantsListPage | user only `<PrivateRoute>` | Shows all plants in a list |
-| `/plant/:id` | PlantDetailPage | user only `<PrivateRoute>` | Details of a plant |
-| `/profile` | ProfilePage | user only `<PrivateRoute>` | Edit personal data, reviews, liked plants |
-| | | | |
-| | | | |
-| | | | |
-| | | | |
+| `/todos`  | TodosList  | user only `<PrivateRoute>` | todos list, add todo, link to todo detail, delete todo        |
 
 ## Components
 
@@ -84,12 +76,6 @@ Todo model
 },{ timestamps: true }
 ```
 
-router.get('/todos', TodoController.getAllTodos);
-router.get('/todos/:id', TodoController.getTodo);
-router.post('/todos', TodoController.createTodo);
-router.put('/todos/:id', TodoController.updateTodo);
-router.delete('/todos/:id', TodoController.deleteTodo);
-
 ## API Endpoints (backend routes)
 
 | HTTP Method | URL             | Request Body                           | Success status | Error Status | Description                                                                                                                     |
@@ -102,7 +88,7 @@ router.delete('/todos/:id', TodoController.deleteTodo);
 | GET         | `/todos/:id`    | {id}                                   | 200            | 404          | Show specific todo                                                                                                              |
 | PUT         | `/todos/:id`    | {title, body}                          | 200            | 400          | Edit todo                                                                                                                       |
 | DELETE      | `/todos/:id`    | {id}                                   | 201            | 400          | delete todo                                                                                                                     |
-| POST        | `/todos/`       | {title, body}                | 201            | 400          | Create and save a new todo                                                                                                      |
+| POST        | `/todos/`       | {title, body}                          | 201            | 400          | Create and save a new todo                                                                                                      |
 
 <br>
 
