@@ -42,8 +42,8 @@ class UploadAvatar extends Component {
             loading: false,
           },
           () => {
-            this.props.me()
-            this.props.updateUser()
+            this.props.me();
+            this.props.updateUser();
           }
         )
       );
@@ -64,7 +64,7 @@ class UploadAvatar extends Component {
         listType="picture-card"
         className="avatar-uploader"
         showUploadList={false}
-        action={process.env.REACT_APP_API_URL + "/profile-picture"}
+        action={process.env.REACT_APP_API_URL + "/todos-picture"}
         withCredentials="true"
         beforeUpload={beforeUpload}
         onChange={this.handleChange}

@@ -3,8 +3,7 @@ import { Row, Col, Carousel, Card, Button } from "antd";
 import { HeartTwoTone, HeartOutlined } from "@ant-design/icons";
 import axios from "axios";
 import Reviews from "../components/Reviews";
-import ReviewModal from "../components/ReviewModal";
-import AplantidaIcon from "../components/AplantidaIcon";
+import AddTodoForm from "../components/AddTodoForm";
 import Axios from "axios";
 import { withAuth } from "../lib/Auth";
 
@@ -28,7 +27,7 @@ const IconText = ({ icon, text }) => (
 
 class PlantDetail extends Component {
   state = {
-    plant: null,
+    todo: null,
     reviews: null,
     key: "tab1",
     isLoading: true,
@@ -37,22 +36,21 @@ class PlantDetail extends Component {
 
   // addReview = (review) => {
   //   // console.log("review :>> ", review);
-  //   const plantCopy = { ...this.state.plant };
-  //   plantCopy.reviews.unshift(review);
-  //   this.setState({ plant: plantCopy });
+  //   const todoCopy = { ...this.state.todo };
+  //   todoCopy.reviews.unshift(review);
+  //   this.setState({ todo: todoCopy });
   // };
 
   addReview = (review) => {
-   this.search()
+    this.search();
   };
 
- 
   search = () => {
     //Get the id from props.match.params.id
-    const name = this.props.match.params.latinName;
-    // console.log("plantLatinName :>> ", name);
+    const name = this.props.match.params.title;
+    // console.log("todoLatinName :>> ", name);
     axios
-      .get(process.env.REACT_APP_API_URL + `/api/plant/${name}`, {
+      .get(process.env.REACT_APP_API_URL + `/api/todo/${name}`, {
         withCredentials: true,
       })
       .then((response) => {
@@ -62,18 +60,18 @@ class PlantDetail extends Component {
         const { user } = this.props;
         console.log("user from favorites :>> ", user);
 
-        const plant = response.data;
-        console.log("plant._id :>> ", plant._id);
+        const todo = response.data;
+        console.log("todo._id :>> ", todo._id);
 
         const isFavorite = user.favorites.find((favorite) => {
           console.log("favorite._id :>> ", favorite._id);
-          return favorite._id === plant._id;
+          return favorite._id === todo._id;
         });
 
         console.log("isFavorite :>> ", isFavorite);
 
         this.setState({
-          plant: response.data,
+          todo: response.data,
           reviews: response.data.reviews,
           isLoading: false,
           favorite: isFavorite,
@@ -92,13 +90,13 @@ class PlantDetail extends Component {
   };
 
   handleClick = () => {
-    const { plant, favorite } = this.state;
+    const { todo, favorite } = this.state;
     const action = favorite ? "remove" : "add";
-    const plantId = plant._id;
+    const todoId = todo._id;
 
     Axios.put(
       process.env.REACT_APP_API_URL + `/api/favorites/`,
-      { plantId, action },
+      { todoId, action },
       {
         withCredentials: true,
       }
@@ -114,41 +112,41 @@ class PlantDetail extends Component {
   };
 
   render() {
-    const { plant, isLoading, favorite } = this.state;
+    const { todo, isLoading, favorite } = this.state;
     console.log("this.state.favorite :>> ", this.state.favorite);
     let contentList;
-    if (plant && !isLoading) {
+    if (todo && !isLoading) {
       contentList = {
         tab1: (
           <>
             <Card style={{ marginTop: 16 }} type="inner" title="Common Name">
-              {plant.commonName}
+              {todo.commonName}
             </Card>
             <Card style={{ marginTop: 16 }} type="inner" title="Family">
-              {plant.characteristics.family}
+              {todo.characteristics.family}
             </Card>
             <Card style={{ marginTop: 16 }} type="inner" title="Habitats">
-              {plant.characteristics.habitats}
+              {todo.characteristics.habitats}
             </Card>
             <Card
               style={{ marginTop: 16 }}
               type="inner"
               title="Edibility Rating"
             >
-              {plant.characteristics.edibilityRating}
+              {todo.characteristics.edibilityRating}
             </Card>
             <Card
               style={{ marginTop: 16 }}
               type="inner"
               title="Medicinal Rating"
             >
-              {plant.characteristics.medicinalRating}
+              {todo.characteristics.medicinalRating}
             </Card>
             <Card style={{ marginTop: 16 }} type="inner" title="Other Uses">
-              {plant.characteristics.otherUses}
+              {todo.characteristics.otherUses}
             </Card>
             <Card style={{ marginTop: 16 }} type="inner" title="Care">
-              {plant.characteristics.care.imgUrl.map((img) => {
+              {todo.characteristics.care.imgUrl.map((img) => {
                 return (
                   <>
                     <img src={img} alt="" />{" "}
@@ -158,10 +156,10 @@ class PlantDetail extends Component {
             </Card>
 
             <Card style={{ marginTop: 16 }} type="inner" title="Range">
-              {plant.characteristics.range}
+              {todo.characteristics.range}
             </Card>
             <Card style={{ marginTop: 16 }} type="inner" title="Weed Potential">
-              {plant.characteristics.weedPotential}
+              {todo.characteristics.weedPotential}
             </Card>
             <Card
               style={{ marginTop: 16 }}
@@ -169,49 +167,36 @@ class PlantDetail extends Component {
               title={
                 <>
                   Known Hazards{" "}
-                  <img src={plant.characteristics.knownHazards.imgUrl} alt="" />
+                  <img src={todo.characteristics.knownHazards.imgUrl} alt="" />
                 </>
               }
             >
-              {plant.characteristics.knownHazards.text}
+              {todo.characteristics.knownHazards.text}
             </Card>
             <Card style={{ marginTop: 16 }} type="inner" title="USDA Hardiness">
-              {plant.characteristics.USDAHardiness}
+              {todo.characteristics.USDAHardiness}
             </Card>
             <Card style={{ marginTop: 16 }} type="inner" title="Liked">
-              {plant.characteristics.liked}
+              {todo.characteristics.liked}
             </Card>
           </>
         ),
         tab2: (
-          <Reviews
-            key={Math.floor(Math.random() * 1000)}
-            data={plant}
-          ></Reviews>
+          <Reviews key={Math.floor(Math.random() * 1000)} data={todo}></Reviews>
         ),
       };
     } else {
       contentList = {
-        tab1: (
-          <AplantidaIcon
-            className="logoLoading"
-            style={{ fontSize: "200px" }}
-          />
-        ),
-        tab2: (
-          <AplantidaIcon
-            className="logoLoading"
-            style={{ fontSize: "200px" }}
-          />
-        ),
+        tab1: <div>loading</div>,
+        tab2: <div>loading</div>,
       };
     }
 
-    return plant ? (
-      <Row className="plantDetail" justify="center" align="top">
+    return todo ? (
+      <Row className="todoDetail" justify="center" align="top">
         <Col>
           <Carousel autoplay style={{ maxHeight: "400px" }}>
-            {plant.img.map((img) => {
+            {todo.img.map((img) => {
               return (
                 <>
                   <img
@@ -221,7 +206,7 @@ class PlantDetail extends Component {
                       maxHeight: "auto",
                       transform: "translate(-0%, -30%)",
                     }}
-                    alt={plant.latinName}
+                    alt={todo.title}
                   />
                 </>
               );
@@ -234,19 +219,19 @@ class PlantDetail extends Component {
           title={
             <>
               <Row style={{ justifyContent: "space-between" }}>
-                <h1> {plant.latinName}</h1>
+                <h1> {todo.title}</h1>
                 {this.state.key === "tab2" ? (
-                  <ReviewModal
+                  <AddTodoForm
                     addReview={this.addReview}
                     search={this.search}
-                    plant={plant}
+                    todo={todo}
                   />
                 ) : null}
                 <Button onClick={this.handleClick}>
                   {favorite ? (
                     <IconText
                       icon={HeartTwoTone}
-                      // text={plant.liked}
+                      // text={todo.liked}
                       key="list-vertical-like-o"
                     />
                   ) : (

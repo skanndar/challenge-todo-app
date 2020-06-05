@@ -6,9 +6,7 @@ function Home() {
   return (
     <Row className="logoRow" justify="center" align="middle">
       <Col className="homeLogo" span={24}>
-        <Link to="/login">
-          <img src="/vertical-horizontal.svg" alt="logo-home" />
-        </Link>
+        <Link to="/login">TODOS LOGO</Link>
       </Col>
     </Row>
   );

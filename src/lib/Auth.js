@@ -2,7 +2,6 @@ import React from "react";
 import axios from "axios";
 import { Spin, Row, Col } from "antd";
 import { LoadingOutlined } from "@ant-design/icons";
-import AplantidaIcon from "./../components/AplantidaIcon";
 
 const { Consumer, Provider } = React.createContext();
 
@@ -171,10 +170,7 @@ class AuthProvider extends React.Component {
         {isLoading ? (
           <Row className="loading" justify="center" align="middle">
             <Col>
-              <AplantidaIcon
-                className="logoLoading"
-                style={{ fontSize: "200px" }}
-              />
+              loading...
               {/* <Spin indicator={antIcon} /> */}
             </Col>
           </Row>

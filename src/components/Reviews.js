@@ -85,7 +85,7 @@ function Reviews(props) {
             avatar={<Avatar src={item.user.image} />}
             title={
               <>
-                <Link to="/profile">{item.title}</Link>{" "}
+                <Link to="/todos">{item.title}</Link>{" "}
                 {props.user._id === item.user._id ? (
                   <Button onClick={() => handleDelete(item._id)} type="ghost">
                     <DeleteTwoTone twoToneColor="#43bd26" />
@@ -94,9 +94,7 @@ function Reviews(props) {
               </>
             }
             description={
-              <Link to={`/plant/${item.plant.latinName}`}>
-                {item.plant.latinName}
-              </Link>
+              <Link to={`/todo/${item.todo.title}`}>{item.todo.title}</Link>
             }
           />
           {item.text}

@@ -11,10 +11,10 @@ const IconText = ({ icon, text }) => (
   </div>
 );
 
-export default function PlantCard(props) {
+export default function TodoCard(props) {
   return (
     <div>
-      <Link to={`/plant/${props.latinName}`}>
+      <Link to={`/todo/${props._id}`}>
         <Card
           hoverable
           size="small"
@@ -28,19 +28,11 @@ export default function PlantCard(props) {
                 overflow: "hidden",
               }}
             >
-              {" "}
-              <img
-                style={{ width: "20vw", minWidth: 288 }}
-                alt={props.latinName}
-                src={props.img[0]}
-              />
+              image
             </div>
           }
         >
-          <Meta
-            title={props.latinName}
-            description={props.characteristics.habitats}
-          />
+          <Meta title={props.title} description={props.body} />
           <IconText
             icon={HeartTwoTone}
             text={props.liked}

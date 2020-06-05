@@ -3,7 +3,6 @@ import { Route, Redirect } from "react-router-dom";
 import { withAuth } from "./../lib/Auth";
 
 function PublicRoute(props) {
-
   const { exact, path, component, isLoggedIn } = props;
   const Component = component;
 
@@ -12,7 +11,7 @@ function PublicRoute(props) {
       exact={exact}
       path={path}
       render={(props) => {
-        if (isLoggedIn) return <Redirect to="/profile" />;
+        if (isLoggedIn) return <Redirect to="/todos" />;
         else if (!isLoggedIn) return <Component {...props} />;
       }}
     />

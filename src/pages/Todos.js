@@ -1,55 +1,50 @@
 import React, { Component } from "react";
-import { withAuth } from "./../lib/Auth";
-import PlantCard from "../components/PlantCard";
+import { withAuth } from "../lib/Auth";
+import TodoCard from "../components/TodoCard";
 import { List, Row, Col } from "antd";
 import FilterDrawer from "../components/FilterDrawer";
-import AplantidaIcon from "../components/AplantidaIcon";
+import AddTodoForm from "../components/AddTodoForm";
 
-class PlantsList extends Component {
+class Todos extends Component {
   state = {
-    plants: [],
-    isLoading: true,
+    todos: [],
+    isLoading: false,
   };
   componentDidMount() {
     // console.log("this.props.location.state :>> ", this.props.location.state);
     if (this.props.location.state) {
-      const { plants } = this.props.location.state;
+      const { todos } = this.props.location.state;
       setTimeout(() => {
-        this.setState({ plants, isLoading: false });
+        this.setState({ todos, isLoading: false });
       }, 1000);
     }
   }
 
   componentDidUpdate(prevProps) {
-    const { plants: newPlants } = this.props.location.state;
-    const { plants: oldPlants } = prevProps.location.state;
+    const { todos: newtodos } = this.props.location.state;
+    const { todos: oldtodos } = prevProps.location.state;
 
-    if (newPlants !== oldPlants) {
+    if (newtodos !== oldtodos) {
       this.setState({ isLoading: true });
       setTimeout(() => {
-        this.setState({ plants: newPlants, isLoading: false });
+        this.setState({ todos: newtodos, isLoading: false });
       }, 500);
     }
   }
 
   render() {
-    const plants = this.state.plants;
+    const todos = this.state.todos;
     const { isLoading } = this.state;
     return (
       <>
         {isLoading ? (
           <Row className="loadingSearch" justify="center" align="middle">
-            <Col>
-              <AplantidaIcon
-                className="logoLoading"
-                style={{ fontSize: "200px" }}
-              />
-              {/* <Spin indicator={antIcon} /> */}
-            </Col>
+            <Col>loading...</Col>
           </Row>
         ) : (
           <div>
-            <h1>Found {plants.length} plants</h1>
+            <AddTodoForm></AddTodoForm>
+            <h1>Found {todos.length} todos</h1>
             <FilterDrawer />
             <List
               className="site-card-wrapper"
@@ -62,10 +57,10 @@ class PlantsList extends Component {
                 xl: 4,
                 xxl: 4,
               }}
-              dataSource={plants}
-              renderItem={(onePlant) => (
+              dataSource={todos}
+              renderItem={(oneTodo) => (
                 <List.Item>
-                  <PlantCard {...onePlant} />
+                  <TodoCard {...oneTodo} />
                 </List.Item>
               )}
             />
@@ -76,4 +71,4 @@ class PlantsList extends Component {
   }
 }
 
-export default withAuth(PlantsList);
+export default withAuth(Todos);

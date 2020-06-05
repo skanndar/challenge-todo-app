@@ -5,8 +5,7 @@ import { Switch, Route } from "react-router-dom";
 // PAGES & COMPONENTS
 import Home from "./pages/Home";
 import LoginForm from "./pages/LoginForm";
-import Profile from "./pages/Profile";
-import PlantsList from "./pages/PlantsList";
+import Todos from "./pages/Todos";
 import PlantDetail from "./pages/PlantDetail";
 import RegistrationForm from "./pages/RegistrationForm";
 import PublicRoute from "./components/PublicRoute";
@@ -15,7 +14,6 @@ import Navbar from "./components/Navbar";
 
 import { Layout, Row, Col } from "antd";
 import NotFound from "./pages/NotFound";
-import AplantidaIcon from "./components/AplantidaIcon";
 
 const { Content, Footer } = Layout;
 
@@ -37,13 +35,7 @@ class App extends Component {
       <>
         {isLoading ? (
           <Row className="loading" justify="center" align="middle">
-            <Col>
-              <AplantidaIcon
-                className="logoLoading"
-                style={{ fontSize: "200px" }}
-              />
-              {/* <Spin indicator={antIcon} /> */}
-            </Col>
+            <Col>loading...</Col>
           </Row>
         ) : (
           <Layout>
@@ -60,7 +52,7 @@ class App extends Component {
                 <Switch>
                   <PrivateRoute
                     exact
-                    path="/plant/:latinName"
+                    path="/todo/:title"
                     component={PlantDetail}
                   />
                   <Route exact path="/" component={Home} />
@@ -70,14 +62,14 @@ class App extends Component {
                     component={RegistrationForm}
                   />
                   <PublicRoute exact path="/login" component={LoginForm} />
-                  <PrivateRoute exact path="/profile" component={Profile} />
-                  <PrivateRoute exact path="/search" component={PlantsList} />
+                  <PrivateRoute exact path="/todos" component={Todos} />
+                  <PrivateRoute exact path="/search" component={Todos} />
                   <Route component={NotFound} />
                 </Switch>
               </div>
             </Content>
             <Footer style={{ textAlign: "center" }}>
-              APLANTIDA ©{new Date().getFullYear()} <br /> Powered by ALIADOS
+              TODOS ©{new Date().getFullYear()} <br /> Powered by ME
             </Footer>
           </Layout>
         )}

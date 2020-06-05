@@ -9,8 +9,8 @@ This is app aims to help the user manage a TODO list
 ## User Stories
 
 - **404:** As an anon/user I can see a 404 page if I try to reach a page that does not exist so that I know it's my fault
-- **Signup:** As an anon I can sign up in the platform so that I can start searching for plants
-- **Login:** As a user I can login to the platform so that I can search for plants
+- **Signup:** As an anon I can sign up in the platform so that I can start searching for todos
+- **Login:** As a user I can login to the platform so that I can search for todos
 - **Logout:** As a user I can logout from the platform so no one else can use it on my behalf
 - **Create todo** As a user I want to create a new todo/task with title and body and save it in the database.
 - **List todos** As a user I want to see all my todos in a list.
@@ -64,6 +64,21 @@ This is app aims to help the user manage a TODO list
 
 ## Models
 
+User model
+
+```javascript
+{
+  email: {type: String, required: true, unique: true},
+  password: {type: String, required: true},
+  fName: String,
+  lName: String,
+  image: String,
+  genre: String,
+  reviews: [{type: Schema.Types.ObjectId,ref:'Review'}]
+  favorites: [{type: Schema.Types.ObjectId,ref:'Plant'}]
+}
+```
+
 Todo model
 
 ```javascript
@@ -78,17 +93,17 @@ Todo model
 
 ## API Endpoints (backend routes)
 
-| HTTP Method | URL             | Request Body                           | Success status | Error Status | Description                                                                                                                     |
-| ----------- | --------------- | -------------------------------------- | -------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
-| GET         | `/auth/profile` | Saved session                          | 200            | 404          | Check if user is logged in and return profile page                                                                              |
-| POST        | `/auth/signup`  | {fName, lName, email, genre, password} | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
-| POST        | `/auth/login`   | {email, password}                      | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session              |
-| POST        | `/auth/logout`  | (empty)                                | 204            | 400          | Logs out the user                                                                                                               |
-| GET         | `/todos`        |                                        | 200            | 404          | Show all todos                                                                                                                  |
-| GET         | `/todos/:id`    | {id}                                   | 200            | 404          | Show specific todo                                                                                                              |
-| PUT         | `/todos/:id`    | {title, body}                          | 200            | 400          | Edit todo                                                                                                                       |
-| DELETE      | `/todos/:id`    | {id}                                   | 201            | 400          | delete todo                                                                                                                     |
-| POST        | `/todos/`       | {title, body}                          | 201            | 400          | Create and save a new todo                                                                                                      |
+| HTTP Method | URL            | Request Body                           | Success status | Error Status | Description                                                                                                                     |
+| ----------- | -------------- | -------------------------------------- | -------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| GET         | `/auth/todos`  | Saved session                          | 200            | 404          | Check if user is logged in and return profile page                                                                              |
+| POST        | `/auth/signup` | {fName, lName, email, genre, password} | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
+| POST        | `/auth/login`  | {email, password}                      | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session              |
+| POST        | `/auth/logout` | (empty)                                | 204            | 400          | Logs out the user                                                                                                               |
+| GET         | `/todos`       |                                        | 200            | 404          | Show all todos                                                                                                                  |
+| GET         | `/todos/:id`   | {id}                                   | 200            | 404          | Show specific todo                                                                                                              |
+| PUT         | `/todos/:id`   | {title, body}                          | 200            | 400          | Edit todo                                                                                                                       |
+| DELETE      | `/todos/:id`   | {id}                                   | 201            | 400          | delete todo                                                                                                                     |
+| POST        | `/todos/`      | {title, body}                          | 201            | 400          | Create and save a new todo                                                                                                      |
 
 <br>
 
