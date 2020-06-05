@@ -1,69 +1,129 @@
-![logo_ironhack_blue 7](https://user-images.githubusercontent.com/23629340/40541063-a07a0a8a-601a-11e8-91b5-2f13e4e6b441.png)
+# aplantida
 
-# React Todo-list challenge
-## < Frontend Test >
+<br>
 
-## What is this about:
-----
- The purpose of this test is to know your ability to create a small functional single page application in a limit of time. Below you’ll find the features, the requirements and the key points you should keep on mind while developing.
+## Description
 
-## What we’ll evaluate
-----
-- The final product.
-- The use of ES6 features is allowed and encouraged.
-- The use of CSS processors (Sass, LESS...) is allowed and encouraged.
-- The following are a bonus points for the candidate:
-  - ✓ Code quality
-  - ✓ Mobile support
-  - ✓ Application structure
-  - ✓ User Interface
-  - ✓ Planning session ( README, Kanban etc.. )
+This is app aims to help the user manage a TODO list
 
-## What we want you to do
----
-We want you to start simple and focus on a working product. At the same time this challenge has no limitations and we encourage you to be creative in terms of functionality and style (includes frontend and backend).
+## User Stories
 
----
-### Example User stories
-- **Create todo** As a user I want to create a new todo/task with `title` and `body` and save it in the database.
+- **404:** As an anon/user I can see a 404 page if I try to reach a page that does not exist so that I know it's my fault
+- **Signup:** As an anon I can sign up in the platform so that I can start searching for plants
+- **Login:** As a user I can login to the platform so that I can search for plants
+- **Logout:** As a user I can logout from the platform so no one else can use it on my behalf
+- **Create todo** As a user I want to create a new todo/task with title and body and save it in the database.
 - **List todos** As a user I want to see all my todos in a list.
 - **Delete todo** As a user I want to delete a todo from the list when I don't want it anymore.
 
-### Backlog
-- **Update todo** A a user I want to be able to modify an existing todo.
-- **Done** As a user I want to mark my todo as done.
-- **Move todos** As a user I want to rearrange my todos.
-- etc...
+## Backlog
 
-## Provided material
----
+- Update todo A a user I want to be able to modify an existing todo.
+- Done As a user I want to mark my todo as done.
+- Move todos As a user I want to rearrange my todos
 
-- Fork and clone this repository.
-- Run the following commands:
+<br>
+
+# Client / Frontend
+
+## React Router Routes (React App)
+
+| Path      | Component  | Permissions                | Behavior                                                      |
+| --------- | ---------- | -------------------------- | ------------------------------------------------------------- |
+| `/`       | SplashPage | public `<Route>`           | Home page                                                     |
+| `/signup` | SignupPage | anon only `<AnonRoute>`    | Signup form, link to login, navigate to homepage after signup |
+| `/login`  | LoginPage  | anon only `<AnonRoute>`    | Login form, link to signup, navigate to homepage after login  |
+| `/logout` | n/a        | user only `<PrivateRoute>` | Navigate to homepage after logout, expire session             |
+| `/todos`  | TodosList  | user only `<PrivateRoute>` | Options todos                                                 |
+
+| `/plants` | PlantsListPage | user only `<PrivateRoute>` | Shows all plants in a list |
+| `/plant/:id` | PlantDetailPage | user only `<PrivateRoute>` | Details of a plant |
+| `/profile` | ProfilePage | user only `<PrivateRoute>` | Edit personal data, reviews, liked plants |
+| | | | |
+| | | | |
+| | | | |
+| | | | |
+
+## Components
+
+- LoginPage
+- SignupPage
+- SplashPage
+- TodosList
+
+## Services
+
+- Auth Service
+  - auth.login(userObj)
+  - auth.signup(userObj)
+  - auth.logout()
+  - auth.me()
+- Todos Service
+
+  - getAllTodos()
+  - getTodo()
+  - createTodo()
+  - updateTodo()
+  - deleteTodo()
+
+<br>
+
+# Server / Backend
+
+## Models
+
+Todo model
+
+```javascript
+ title: {
+    type: String
+  },
+  body: {
+    type: String
+  }
+},{ timestamps: true }
 ```
-cd challenge-todo-app
-npm install
-npm start
-```
 
-- Fork and clone [the server](https://github.com/ironhackbcn/challenge-todo-api) repository
+router.get('/todos', TodoController.getAllTodos);
+router.get('/todos/:id', TodoController.getTodo);
+router.post('/todos', TodoController.createTodo);
+router.put('/todos/:id', TodoController.updateTodo);
+router.delete('/todos/:id', TodoController.deleteTodo);
 
-You will get intstuctions about installation and how to access the Todo REST api there.
+## API Endpoints (backend routes)
 
----
+| HTTP Method | URL             | Request Body                           | Success status | Error Status | Description                                                                                                                     |
+| ----------- | --------------- | -------------------------------------- | -------------- | ------------ | ------------------------------------------------------------------------------------------------------------------------------- |
+| GET         | `/auth/profile` | Saved session                          | 200            | 404          | Check if user is logged in and return profile page                                                                              |
+| POST        | `/auth/signup`  | {fName, lName, email, genre, password} | 201            | 404          | Checks if fields not empty (422) and user not exists (409), then create user with encrypted password, and store user in session |
+| POST        | `/auth/login`   | {email, password}                      | 200            | 401          | Checks if fields not empty (422), if user exists (404), and if password matches (404), then stores user in session              |
+| POST        | `/auth/logout`  | (empty)                                | 204            | 400          | Logs out the user                                                                                                               |
+| GET         | `/todos`        |                                        | 200            | 404          | Show all todos                                                                                                                  |
+| GET         | `/todos/:id`    | {id}                                   | 200            | 404          | Show specific todo                                                                                                              |
+| PUT         | `/todos/:id`    | {title, body}                          | 200            | 400          | Edit todo                                                                                                                       |
+| DELETE      | `/todos/:id`    | {id}                                   | 201            | 400          | delete todo                                                                                                                     |
+| POST        | `/todos/`       | {title, body}                | 201            | 400          | Create and save a new todo                                                                                                      |
 
-## Delivery requirements
----
-- Push your application to GitHub and send the repository url on Slack.
-- The application should include connection between the backend and the frontend.
-- It should show a list of todos/tasks.
-- It should include a form to add todos/tasks.
-- The solution must run properly
-- A text file with any instruction required for compiling and/or running the application should be provided as it would be directed to a no technical user.
+<br>
 
-## Delivery extra (not required)
-- Complete CRUD.
-- Any kind of look & feel or usability improvement for showing your ability/experience in making attractive UI/UX will be evaluated.
-- Any extra comment explaining about what was done or what the candidate would had wanted to improve but didn’t due to lack of time, will be appreciated and evaluated.
+## Links
 
-## 🤩 Good Luck! 🤩
+### Trello/Kanban
+
+[Link]()
+
+### Git
+
+The url to your repository and to your deployed project
+
+[Client repository Link](https://github.com/skanndar/challenge-todo-app)
+
+[Server repository Link](https://github.com/skanndar/challenge-todo-api)
+
+[Deployed App Link]()
+
+### Slides
+
+The url to your presentation slides
+
+[Slides Link]()
